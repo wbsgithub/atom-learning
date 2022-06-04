@@ -6,16 +6,14 @@ import (
 	"time"
 )
 
-
-func Hello(){
+func Hello() {
 	fmt.Println("hello groutine")
 }
-func TestGroutine(t *testing.T){
+func TestGroutine(t *testing.T) {
 	go Hello()
 	time.Sleep(1 * time.Second)
 	fmt.Println("main test func")
 }
-
 
 func numbers() {
 	for i := 1; i <= 5; i++ {
@@ -36,11 +34,11 @@ func TestGroutineLoop(t *testing.T) {
 	fmt.Println("main terminated")
 }
 
-func TestRoutine(t *testing.T){
-	for i:=0;i<10;i++{
-		go func(i int){
+func TestRoutine(t *testing.T) {
+	for i := 0; i < 10; i++ {
+		go func(i int) {
 			fmt.Println(i)
 		}(i)
 	}
-	time.Sleep(1000* time.Millisecond)
+	time.Sleep(1000 * time.Millisecond)
 }
