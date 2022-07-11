@@ -1,6 +1,9 @@
 package map_ext_test
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestMapExt(t *testing.T) {
 	m := map[int]func(p int) int{}
@@ -38,4 +41,22 @@ func TestMapForSet(t *testing.T) {
 	}
 	t.Logf("map len is %d", len(m))
 
+}
+
+func TestWcFunc(t *testing.T) {
+	wc := wcFunc("I love my work and I love my family too")
+	t.Log(wc)
+}
+
+func wcFunc(data string) map[string]int {
+	wc := make(map[string]int)
+	fields := strings.Fields(data)
+	for _, key := range fields {
+		if v, ok := wc[key]; ok {
+			wc[key] = v + 1
+		} else {
+			wc[key] = 1
+		}
+	}
+	return wc
 }
