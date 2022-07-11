@@ -1,6 +1,9 @@
 package slice_test
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestSliceInit(t *testing.T) {
 	//定义一个slice  []没有写明长度
@@ -49,4 +52,72 @@ func TestSliceCompare(t *testing.T) {
 	//if a == b {
 	//	t.Log("equal")
 	//}
+}
+
+func TestSlicePratice(t *testing.T) {
+	var arr = []string{"red", "black", "", "", "pink", "blue"}
+	result := removeEmptyStr2(arr)
+	fmt.Printf("len:%d,cap:%d\n", len(result), cap(result))
+	fmt.Println(result)
+}
+
+func removeEmptyStr(data []string) []string {
+	result := data[:0]
+	fmt.Printf("len:%d,cap:%d\n", len(result), cap(result))
+	for _, ele := range data {
+		if ele != "" {
+			result = append(result, ele)
+		}
+	}
+	return result
+}
+
+func removeEmptyStr2(data []string) []string {
+	var i int = 0
+	for _, ele := range data {
+		if ele != "" {
+			data[i] = ele
+			i++
+		}
+	}
+	return data[:i]
+}
+
+/**
+去掉重复的字符串
+*/
+func TestSlicePratice1(t *testing.T) {
+	var arr = []string{"red", "black", "red", "pink", "blue", "pink", "blue"}
+	result := make([]string, 0)
+	for _, col := range arr {
+		var flag = false
+		for _, col1 := range result {
+			if col1 == col {
+				flag = true
+				break
+			}
+		}
+		if !flag {
+			result = append(result, col)
+		}
+	}
+	t.Log(result)
+}
+
+func TestSliceCopy(t *testing.T) {
+	arr := []string{"5", "6", "7", "8", "9"}
+	result := sliceCopy(arr)
+	t.Log(result)
+}
+
+func sliceCopy(data []string) []string {
+	len := len(data)
+	if len%2 == 0 {
+		return data
+	}
+	half := len / 2
+	preHalf := data[:half]
+	back := data[1:len]
+	copy(back, preHalf)
+	return back
 }
