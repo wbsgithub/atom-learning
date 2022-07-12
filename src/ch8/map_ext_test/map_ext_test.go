@@ -1,6 +1,7 @@
 package map_ext_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -45,7 +46,9 @@ func TestMapForSet(t *testing.T) {
 
 func TestWcFunc(t *testing.T) {
 	wc := wcFunc("I love my work and I love my family too")
-	t.Log(wc)
+	for key, value := range wc {
+		fmt.Printf("key:%s,value:%d\n", key, value)
+	}
 }
 
 func wcFunc(data string) map[string]int {
