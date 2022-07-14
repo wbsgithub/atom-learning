@@ -20,7 +20,7 @@ func numbers() {
 		time.Sleep(250 * time.Millisecond)
 		fmt.Printf("%d ", i)
 	}
-}
+
 	for i := 'a'; i <= 'e'; i++ {
 		time.Sleep(400 * time.Millisecond)
 		fmt.Printf("%c ", i)
@@ -28,7 +28,6 @@ func numbers() {
 }
 func TestGroutineLoop(t *testing.T) {
 	go numbers()
-	go alphabets()
 	time.Sleep(3000 * time.Millisecond)
 	fmt.Println("main terminated")
 }
