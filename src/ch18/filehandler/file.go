@@ -12,46 +12,54 @@ func main() {
 	fmt.Println("请输入待遍历目录")
 	var path string
 	fmt.Scan(&path)
+	result := make(map[string]int)
+	scandir(path, result)
+	for k, v := range result {
+		fmt.Printf("word:%s,count:%d\n", k, v)
+	}
+}
 
-	file, err := os.OpenFile(path, os.O_RDONLY, os.ModeDir)
+func scandir(dirPath string, result map[string]int) {
+	dirFile, err := os.OpenFile(dirPath, os.O_RDONLY, os.ModeDir)
+	defer dirFile.Close()
 	if err != nil {
 		fmt.Println("OpenFile err:", err)
 		return
 	}
-	defer file.Close()
-	dir, err := file.ReadDir(-1)
-	if err != nil {
-
-	}
-	result := make(map[string]int)
-	for i, v := range dir {
-		fmt.Println("i:", i, "v:", v.Name())
-		if strings.HasSuffix(v.Name(), ".txt") {
-			txt, err := os.OpenFile(path+"/"+v.Name(), os.O_RDWR, 6)
-			defer txt.Close()
-			if err != nil {
-				fmt.Println("OpenFile txt err:", err)
-			}
-			reader := bufio.NewReader(txt)
-			for {
-				bytes, err := reader.ReadBytes('\n')
-				if err != nil && err == io.EOF {
-					break
-				}
-				line := string(bytes)
-				fields := strings.Fields(line)
-				for _, word := range fields {
-					if v, ok := result[word]; ok {
-						result[word] = v + 1
-					} else {
-						result[word] = 1
-					}
-				}
-			}
-
+	subFile, err := dirFile.ReadDir(-1)
+	for _, v := range subFile {
+		if v.IsDir() {
+			scandir(dirPath+"/"+v.Name(), result)
+		} else {
+			readFile(dirPath+"/"+v.Name(), result)
 		}
 	}
-	for k, v := range result {
-		fmt.Printf("word:%s,count:%d\n", k, v)
+}
+
+func readFile(filePath string, result map[string]int) {
+	if strings.HasSuffix(filePath, "a.txt") {
+		fmt.Printf("filePath:%s\n", filePath)
+		txt, err := os.OpenFile(filePath, os.O_RDONLY, 6)
+		defer txt.Close()
+		if err != nil {
+			fmt.Println("OpenFile txt err:", err)
+		}
+		reader := bufio.NewReader(txt)
+		for {
+			bytes, err := reader.ReadBytes('\n')
+			if err != nil && err == io.EOF {
+				break
+			}
+			line := string(bytes)
+			fields := strings.Fields(line)
+			for _, word := range fields {
+				if v, ok := result[word]; ok {
+					result[word] = v + 1
+				} else {
+					result[word] = 1
+				}
+			}
+		}
+
 	}
 }

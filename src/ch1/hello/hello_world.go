@@ -6,8 +6,15 @@ package main //包，表明代码所在的模块
 //文件名不一定是main.go
 
 import (
+	"flag"
 	"fmt"
 ) //引入代码依赖
+
+var name string
+
+func init() {
+	flag.StringVar(&name, "name", "everyone", "The greeting object.")
+}
 
 //退出返回值
 //与其他主要编程语言的差异
@@ -23,7 +30,8 @@ import (
 //The master has failed more times than the beginner has tried
 //功能实现
 func main() {
-	fmt.Println("Hello World")
+	flag.Parse()
+	fmt.Printf("Hello World:%s\n", name)
 	// if len(os.Args) > 1 {
 	// 	fmt.Println("Hello World", os.Args[1])
 	// }

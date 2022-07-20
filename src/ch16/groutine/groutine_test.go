@@ -1,4 +1,4 @@
-package groutine
+package main
 
 import (
 	"fmt"
@@ -32,11 +32,13 @@ func TestGroutineLoop(t *testing.T) {
 	fmt.Println("main terminated")
 }
 
+func a(i int) {
+	fmt.Println(i)
+}
+
 func TestRoutine(t *testing.T) {
 	for i := 0; i < 10; i++ {
-		go func(i int) {
-			fmt.Println(i)
-		}(i)
+		go a(i)
 	}
 	time.Sleep(1000 * time.Millisecond)
 }

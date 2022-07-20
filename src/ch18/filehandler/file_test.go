@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"testing"
 )
@@ -86,18 +85,37 @@ func TestReadFile(t *testing.T) {
 		} else if err != nil {
 			fmt.Println("read file err:", err)
 		}
-		fmt.Println(string(buf))
+		fmt.Println(string(buf[:]))
 	}
 
 }
 
-func TestDir(t *testing.T) {
-	dir, err := ioutil.ReadDir("/Users/wangbin/Documents/")
+func TestFileCopy(t *testing.T) {
+	source, err := os.OpenFile("/Users/wangbin/Documents/区块链课程/2019年Go语言与区块链在线就业班/第一、二阶段/day1/视频/01.指针地址个变量空间.avi", os.O_RDWR, 6)
+	defer source.Close()
 	if err != nil {
-
+		fmt.Println("open file err:", err)
+		return
 	}
-	for i, v := range dir {
-		fmt.Println("i:", i, "v:", v.Name())
+	target, err := os.Create("/Users/wangbin/Documents/区块链课程/2019年Go语言与区块链在线就业班/第一、二阶段/day1/视频/01.指针地址个变量空间1.avi")
+	defer target.Close()
+	if err != nil {
+		fmt.Println("open file err:", err)
+		return
+	}
+	buf := make([]byte, 1024)
+	for {
+		n, err := source.Read(buf)
+		if err != nil && err != io.EOF {
+			fmt.Println(err)
+			break
+		}
+		if n == 0 {
+			fmt.Println("文件复制完毕")
+			break
+		}
+		tmp := buf[:n]
+		target.Write(tmp)
 	}
 
 }
